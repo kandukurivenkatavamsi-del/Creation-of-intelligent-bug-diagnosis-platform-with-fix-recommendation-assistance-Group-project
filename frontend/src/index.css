@@ -1,0 +1,1567 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* =========================================================
+   BUGSENSE AI — GLOBAL DESIGN SYSTEM
+   Developer Console / AI Diagnostics Interface
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   DARK THEME
+   --------------------------------------------------------- */
+
+:root {
+  --color-canvas: 6 8 18;
+  --color-surface: 13 17 30;
+  --color-overlay: 255 255 255;
+
+  --slate-50: 248 250 252;
+  --slate-100: 241 245 249;
+  --slate-200: 226 232 240;
+  --slate-300: 203 213 225;
+  --slate-400: 148 163 184;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 51 65 85;
+  --slate-800: 30 41 59;
+  --slate-900: 15 23 42;
+  --slate-950: 2 6 23;
+
+  --accent-primary: 124 92 255;
+  --accent-secondary: 34 211 238;
+  --accent-purple: 168 85 247;
+
+  --danger: 248 113 113;
+  --warning: 251 191 36;
+  --success: 52 211 153;
+
+  --panel-border: rgba(148, 163, 184, 0.1);
+  --panel-highlight: rgba(124, 92, 255, 0.08);
+  --gauge-track: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ---------------------------------------------------------
+   LIGHT THEME
+   --------------------------------------------------------- */
+
+.light {
+  --color-canvas: 248 250 252;
+  --color-surface: 255 255 255;
+  --color-overlay: 15 23 42;
+
+  --slate-50: 15 23 42;
+  --slate-100: 30 41 59;
+  --slate-200: 51 65 85;
+  --slate-300: 71 85 105;
+  --slate-400: 100 116 139;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 203 213 225;
+  --slate-800: 226 232 240;
+  --slate-900: 241 245 249;
+  --slate-950: 248 250 252;
+
+  --panel-border: rgba(15, 23, 42, 0.08);
+  --panel-highlight: rgba(124, 92, 255, 0.06);
+  --gauge-track: rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+@layer base {
+
+  html {
+    @apply scroll-smooth;
+    background: rgb(var(--color-canvas));
+  }
+
+  body {
+    @apply text-slate-200 font-body antialiased transition-colors duration-200;
+    min-height: 100vh;
+
+    background-color: rgb(var(--color-canvas));
+
+    background-image:
+      radial-gradient(
+        circle at 10% 0%,
+        rgba(124, 92, 255, 0.16),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 90% 5%,
+        rgba(34, 211, 238, 0.10),
+        transparent 26%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(168, 85, 247, 0.08),
+        transparent 35%
+      );
+
+    background-attachment: fixed;
+  }
+
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+
+    background-image:
+      linear-gradient(
+        rgba(255, 255, 255, 0.018) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.018) 1px,
+        transparent 1px
+      );
+
+    background-size: 42px 42px;
+
+    mask-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.8),
+        transparent 85%
+      );
+  }
+
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-slate-50;
+    letter-spacing: -0.015em;
+  }
+
+
+  ::selection {
+    background: rgba(124, 92, 255, 0.35);
+    color: white;
+  }
+
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(124, 92, 255, 0.55)
+      rgba(255, 255, 255, 0.03);
+  }
+
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+
+  *::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+
+  *::-webkit-scrollbar-thumb {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(124, 92, 255, 0.75),
+        rgba(34, 211, 238, 0.65)
+      );
+
+    border-radius: 999px;
+  }
+
+
+  *::-webkit-scrollbar-thumb:hover {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(139, 111, 255, 0.95),
+        rgba(34, 211, 238, 0.85)
+      );
+  }
+
+
+  *:focus-visible {
+    outline: none;
+
+    box-shadow:
+      0 0 0 2px rgb(var(--color-canvas)),
+      0 0 0 4px rgba(124, 92, 255, 0.75);
+  }
+
+}
+
+
+/* =========================================================
+   COMPONENT SYSTEM
+   ========================================================= */
+
+@layer components {
+
+
+  /* -------------------------------------------------------
+     PANEL
+     ------------------------------------------------------- */
+
+  .panel {
+    position: relative;
+
+    @apply rounded-2xl;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(19, 24, 42, 0.94),
+        rgba(10, 14, 27, 0.96)
+      );
+
+    border: 1px solid rgba(148, 163, 184, 0.10);
+
+    box-shadow:
+      0 18px 45px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+    backdrop-filter: blur(18px);
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  .panel:hover {
+    border-color: rgba(124, 92, 255, 0.18);
+
+    box-shadow:
+      0 22px 55px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(124, 92, 255, 0.035);
+  }
+
+
+  .light .panel {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.96),
+        rgba(248, 250, 252, 0.98)
+      );
+
+    border-color: rgba(15, 23, 42, 0.08);
+
+    box-shadow:
+      0 15px 35px rgba(15, 23, 42, 0.08);
+  }
+
+
+  /* -------------------------------------------------------
+     INPUT
+     ------------------------------------------------------- */
+
+  .input-field {
+    @apply w-full rounded-xl px-4 py-3 text-sm text-slate-100 outline-none;
+
+    background:
+      rgba(4, 7, 16, 0.72);
+
+    border:
+      1px solid rgba(148, 163, 184, 0.13);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+  }
+
+
+  .input-field::placeholder {
+    color: rgb(var(--slate-500));
+  }
+
+
+  .input-field:hover {
+    border-color:
+      rgba(148, 163, 184, 0.22);
+  }
+
+
+  .input-field:focus {
+    background:
+      rgba(6, 10, 22, 0.95);
+
+    border-color:
+      rgba(124, 92, 255, 0.7);
+
+    box-shadow:
+      0 0 0 3px rgba(124, 92, 255, 0.10),
+      0 0 22px rgba(124, 92, 255, 0.06);
+  }
+
+
+  .light .input-field {
+    background:
+      rgba(248, 250, 252, 0.95);
+
+    border-color:
+      rgba(15, 23, 42, 0.11);
+  }
+
+
+  /* -------------------------------------------------------
+     LABEL
+     ------------------------------------------------------- */
+
+  .label {
+    @apply block text-xs font-semibold uppercase mb-2;
+
+    color: rgb(var(--slate-400));
+
+    letter-spacing: 0.11em;
+  }
+
+
+  /* -------------------------------------------------------
+     PRIMARY BUTTON
+     ------------------------------------------------------- */
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgb(124, 92, 255),
+        rgb(100, 75, 225)
+      );
+
+    border:
+      1px solid rgba(167, 139, 250, 0.28);
+
+    box-shadow:
+      0 8px 25px rgba(124, 92, 255, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      filter 0.15s ease;
+  }
+
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+      0 12px 32px rgba(124, 92, 255, 0.30);
+  }
+
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+
+  .btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+
+  /* -------------------------------------------------------
+     SECONDARY BUTTON
+     ------------------------------------------------------- */
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-200;
+
+    background:
+      rgba(255, 255, 255, 0.035);
+
+    border:
+      1px solid rgba(148, 163, 184, 0.13);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+
+  .btn-secondary:hover {
+    background:
+      rgba(124, 92, 255, 0.075);
+
+    border-color:
+      rgba(124, 92, 255, 0.28);
+
+    transform:
+      translateY(-1px);
+  }
+
+
+  .btn-secondary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+
+  /* -------------------------------------------------------
+     BADGES
+     ------------------------------------------------------- */
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+
+    backdrop-filter: blur(10px);
+  }
+
+
+  /* -------------------------------------------------------
+     AI GLOW CARD
+     ------------------------------------------------------- */
+
+  .ai-card {
+    position: relative;
+
+    border:
+      1px solid rgba(124, 92, 255, 0.22);
+
+    border-radius:
+      16px;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(124, 92, 255, 0.06),
+        rgba(34, 211, 238, 0.025)
+      );
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  }
+
+
+  .ai-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+    top: 0;
+
+    height: 1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(124, 92, 255, 0.85),
+        rgba(34, 211, 238, 0.75),
+        transparent
+      );
+  }
+
+
+  /* -------------------------------------------------------
+     TERMINAL / CODE VIEW
+     ------------------------------------------------------- */
+
+  .terminal-panel {
+    @apply rounded-xl font-mono;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(4, 6, 13, 0.98),
+        rgba(8, 11, 21, 0.98)
+      );
+
+    border:
+      1px solid rgba(71, 85, 105, 0.25);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  }
+
+
+  /* -------------------------------------------------------
+     STATUS DOT
+     ------------------------------------------------------- */
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 999px;
+
+    background:
+      rgb(34, 211, 238);
+
+    box-shadow:
+      0 0 0 4px rgba(34, 211, 238, 0.09),
+      0 0 12px rgba(34, 211, 238, 0.75);
+  }
+
+
+  /* -------------------------------------------------------
+     METRIC CARD
+     ------------------------------------------------------- */
+
+  .metric-card {
+    position: relative;
+    overflow: hidden;
+
+    @apply rounded-2xl p-5;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(17, 22, 38, 0.9),
+        rgba(10, 13, 25, 0.95)
+      );
+
+    border:
+      1px solid rgba(148, 163, 184, 0.09);
+
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.16);
+  }
+
+
+  .metric-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -40px;
+    top: -40px;
+
+    border-radius: 999px;
+
+    background:
+      radial-gradient(
+        circle,
+        rgba(124, 92, 255, 0.16),
+        transparent 70%
+      );
+  }
+
+
+  /* -------------------------------------------------------
+     GRADIENT TEXT
+     ------------------------------------------------------- */
+
+  .gradient-text {
+    background:
+      linear-gradient(
+        90deg,
+        rgb(167, 139, 250),
+        rgb(34, 211, 238)
+      );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+  }
+
+
+  /* -------------------------------------------------------
+     SMALL SECTION HEADING
+     ------------------------------------------------------- */
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    letter-spacing: 0.18em;
+
+    color:
+      rgb(139, 111, 255);
+  }
+
+
+  /* -------------------------------------------------------
+     DIVIDER
+     ------------------------------------------------------- */
+
+  .soft-divider {
+    height: 1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(148, 163, 184, 0.15),
+        transparent
+      );
+  }
+
+
+  /* -------------------------------------------------------
+     GLASS CHIP
+     ------------------------------------------------------- */
+
+  .glass-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding:
+      6px 10px;
+
+    border-radius:
+      999px;
+
+    font-size:
+      11px;
+
+    font-weight:
+      600;
+
+    color:
+      rgb(var(--slate-300));
+
+    background:
+      rgba(255, 255, 255, 0.035);
+
+    border:
+      1px solid rgba(148, 163, 184, 0.10);
+  }
+
+
+  /* -------------------------------------------------------
+     AGENT CARD
+     ------------------------------------------------------- */
+
+  .agent-card {
+    position: relative;
+
+    padding:
+      16px;
+
+    border-radius:
+      14px;
+
+    background:
+      rgba(3, 6, 15, 0.45);
+
+    border:
+      1px solid rgba(148, 163, 184, 0.08);
+
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  .agent-card:hover {
+    background:
+      rgba(124, 92, 255, 0.04);
+
+    border-color:
+      rgba(124, 92, 255, 0.18);
+  }
+
+}
+
+/* =========================================================
+   COMPREHENSIVE LIGHT THEME ENGINE
+   Ensures seamless, high-contrast, beautiful white mode
+   ========================================================= */
+
+html.light,
+:root.light,
+.light {
+  --color-canvas: 248 250 252 !important;
+  --color-surface: 255 255 255 !important;
+  --color-overlay: 15 23 42 !important;
+
+  --slate-50: 15 23 42 !important;
+  --slate-100: 30 41 59 !important;
+  --slate-200: 15 23 42 !important;
+  --slate-300: 30 41 59 !important;
+  --slate-400: 51 65 85 !important;
+  --slate-500: 71 85 105 !important;
+  --slate-600: 71 85 105 !important;
+  --slate-700: 100 116 139 !important;
+  --slate-800: 226 232 240 !important;
+  --slate-900: 241 245 249 !important;
+  --slate-950: 248 250 252 !important;
+
+  --panel-border: rgba(15, 23, 42, 0.08) !important;
+  --panel-highlight: rgba(124, 92, 255, 0.06) !important;
+}
+
+.light body {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(124, 92, 255, 0.05), transparent 28%),
+    radial-gradient(circle at 90% 5%, rgba(34, 211, 238, 0.04), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.03), transparent 35%) !important;
+}
+
+.light body::before {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.025) 1px, transparent 1px) !important;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 85%) !important;
+}
+
+/* =========================================================
+   TEXT VISIBILITY OVERRIDES ACROSS ALL PAGES
+   ========================================================= */
+
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+  color: #0f172a !important;
+}
+
+/* Ensure all slate text is dark and readable in light mode */
+.light .text-slate-100 { color: #0f172a !important; }
+.light .text-slate-200 { color: #0f172a !important; }
+.light .text-slate-300 { color: #1e293b !important; }
+.light .text-slate-400 { color: #334155 !important; }
+.light .text-slate-500 { color: #475569 !important; }
+.light .text-slate-600 { color: #475569 !important; }
+.light .text-slate-700 { color: #64748b !important; }
+
+/* Invert default white text to dark slate in light mode (e.g. bug titles, card names) */
+.light p.text-white,
+.light span.text-white,
+.light div.text-white,
+.light a.text-white,
+.light h1.text-white,
+.light h2.text-white,
+.light h3.text-white,
+.light h4.text-white {
+  color: #0f172a;
+}
+
+/* Preserve bright white text ONLY on primary accent buttons */
+.light .btn-primary,
+.light .btn-primary *,
+.light button.btn-primary,
+.light a.btn-primary,
+.light .keep-white {
+  color: #ffffff !important;
+}
+
+/* Prevent text from disappearing into white on hover */
+.light .group:hover .group-hover\:text-white,
+.light .hover\:text-white:hover {
+  color: #6d28d9 !important;
+}
+
+.light .group:hover .group-hover\:text-slate-200,
+.light .hover\:text-slate-200:hover {
+  color: #0f172a !important;
+}
+
+.light .group:hover .group-hover\:text-slate-300,
+.light .hover\:text-slate-300:hover {
+  color: #1e293b !important;
+}
+
+/* Tone Colors (rich, readable shades in Light Mode) */
+.light .text-violet-300 { color: #7c3aed !important; }
+.light .text-cyan-300 { color: #0891b2 !important; }
+.light .text-amber-300 { color: #d97706 !important; }
+.light .text-red-300 { color: #dc2626 !important; }
+.light .text-emerald-300 { color: #059669 !important; }
+.light .text-violet-200 { color: #6d28d9 !important; }
+.light .text-cyan-200 { color: #0e7490 !important; }
+
+/* =========================================================
+   SIDEBAR & TOPBAR IN LIGHT MODE
+   ========================================================= */
+
+.light aside {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.02) !important;
+}
+
+.light aside nav a {
+  color: #475569 !important;
+}
+
+.light aside nav a:hover {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light aside nav a[class*="from-violet-500"] {
+  background: linear-gradient(to right, rgba(124, 92, 255, 0.10), rgba(34, 211, 238, 0.04)) !important;
+  color: #6d28d9 !important;
+  border-color: rgba(124, 92, 255, 0.22) !important;
+  font-weight: 600 !important;
+}
+
+.light aside nav a[class*="from-violet-500"] span {
+  color: #6d28d9 !important;
+}
+
+.light header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 16px rgba(15, 23, 42, 0.02) !important;
+}
+
+.light header input {
+  background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  padding-left: 2.5rem !important;
+}
+
+.light header input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.light header button:not(.btn-primary):not([class*="fixed"]) {
+  border-color: #e2e8f0 !important;
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+}
+
+.light .bg-transparent,
+.light [class*="bg-transparent"],
+.light [class*="fixed"][class*="bg-transparent"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+
+/* Dropdown menus in Light Mode */
+.light .z-\[9991\],
+.light .z-\[9999\],
+.light div[class*="bg-\[\#0b0f1d\]"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12) !important;
+}
+
+.light div[class*="bg-\[\#0b0f1d\]"] p,
+.light div[class*="bg-\[\#0b0f1d\]"] span,
+.light div[class*="bg-\[\#0b0f1d\]"] button {
+  color: #1e293b !important;
+}
+
+.light div[class*="bg-\[\#0b0f1d\]"] button:hover {
+  background-color: #f8fafc !important;
+}
+
+/* =========================================================
+   CARDS, PANELS, HERO BANNERS & BADGES
+   ========================================================= */
+
+/* Hero Banner across all pages */
+.light section[class*="via-\[\#0c1020\]"],
+.light section[class*="via-\[\#0b0f1d\]"],
+.light section[class*="via-\[\#0b0f17\]"] {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.08), #ffffff 50%, rgba(34, 211, 238, 0.06)) !important;
+  border: 1px solid rgba(124, 92, 255, 0.18) !important;
+  box-shadow: 0 8px 30px -4px rgba(124, 92, 255, 0.05) !important;
+}
+
+/* Panels */
+.light .panel {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02) !important;
+}
+
+.light .panel:hover {
+  border-color: rgba(124, 92, 255, 0.25) !important;
+}
+
+/* Metric Cards */
+.light .grid .rounded-2xl.border.bg-gradient-to-br {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+}
+
+.light .grid .rounded-2xl.border.bg-gradient-to-br .text-white {
+  color: #0f172a !important;
+}
+
+.light .grid .rounded-2xl.border.bg-gradient-to-br .text-slate-600 {
+  color: #475569 !important;
+}
+
+/* High-Contrast Severity Badges */
+.light .bg-alert-critical\/15 {
+  background-color: #fef2f2 !important;
+}
+.light .text-alert-critical {
+  color: #b91c1c !important;
+  font-weight: 600 !important;
+}
+.light .ring-alert-critical\/30 {
+  --tw-ring-color: #fecaca !important;
+}
+
+.light .bg-alert-high\/15 {
+  background-color: #fffbeb !important;
+}
+.light .text-alert-high {
+  color: #b45309 !important;
+  font-weight: 600 !important;
+}
+.light .ring-alert-high\/30 {
+  --tw-ring-color: #fde68a !important;
+}
+
+.light .bg-alert-medium\/15 {
+  background-color: #f0f9ff !important;
+}
+.light .text-alert-medium {
+  color: #0369a1 !important;
+  font-weight: 600 !important;
+}
+.light .ring-alert-medium\/30 {
+  --tw-ring-color: #bae6fd !important;
+}
+
+.light .bg-alert-low\/15 {
+  background-color: #f8fafc !important;
+}
+.light .text-alert-low {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+.light .ring-alert-low\/30 {
+  --tw-ring-color: #e2e8f0 !important;
+}
+
+/* High-Contrast Status Badges */
+.light .bg-signal-500\/15 {
+  background-color: #f0fdf4 !important;
+}
+.light .text-signal-400 {
+  color: #15803d !important;
+  font-weight: 600 !important;
+}
+.light .ring-signal-500\/30 {
+  --tw-ring-color: #bbf7d0 !important;
+}
+
+.light .bg-amber-400\/15 {
+  background-color: #fffbeb !important;
+}
+
+/* Pills & Chips */
+.light .glass-chip {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.light .font-mono.text-slate-500,
+.light .font-mono.text-slate-600 {
+  color: #334155 !important;
+}
+
+/* Secondary Buttons & Inputs */
+.light .btn-secondary {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+}
+
+.light .btn-secondary:hover {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+.light .input-field {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.light .input-field:focus {
+  background: #ffffff !important;
+  border-color: #7c3aed !important;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15) !important;
+}
+
+.light .input-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Dividers & Borders */
+.light .border-white\/\[0\.045\],
+.light .border-white\/\[0\.05\],
+.light .border-white\/\[0\.06\],
+.light .border-white\/\[0\.07\],
+.light .border-white\/\[0\.08\] {
+  border-color: #e2e8f0 !important;
+}
+
+.light .divide-white\/\[0\.045\] > :not([hidden]) ~ :not([hidden]),
+.light .divide-white\/\[0\.05\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e2e8f0 !important;
+}
+
+.light .bg-white\/\[0\.025\],
+.light .bg-white\/\[0\.02\],
+.light .bg-white\/\[0\.035\],
+.light .bg-white\/\[0\.04\] {
+  background-color: #f1f5f9 !important;
+}
+
+.light a.group:hover {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+}
+
+/* Chat Assistant in Light Mode */
+.light div[style*="maxHeight: 72vh"],
+.light div[style*="max-height: 72vh"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.14) !important;
+}
+
+.light div[style*="maxHeight: 72vh"] .text-slate-100 {
+  color: #0f172a !important;
+}
+
+.light div[style*="maxHeight: 72vh"] .text-slate-400 {
+  color: #334155 !important;
+}
+
+.light div[style*="maxHeight: 72vh"] .bg-white\/\[0\.025\] {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light div[style*="maxHeight: 72vh"] form {
+  background-color: #f8fafc !important;
+}
+
+/* ---------------------------------------------------------
+   LIGHT MODE CODE & TERMINAL PANELS
+   --------------------------------------------------------- */
+
+.light .terminal-panel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.02), 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+.light .terminal-panel div {
+  border-color: #e2e8f0 !important;
+}
+
+.light .terminal-panel textarea,
+.light .terminal-panel pre,
+.light .terminal-panel code {
+  color: #0f172a !important;
+}
+
+.light .terminal-panel textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.light .terminal-panel span.text-slate-600 {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+/* ---------------------------------------------------------
+   LIGHT MODE HERO BANNER GRADIENTS
+   --------------------------------------------------------- */
+
+.light [class*="via-[#0b0f1d]"],
+.light [class*="via-[#0c1020]"] {
+  background: linear-gradient(135deg, rgba(238, 242, 255, 0.95), rgba(248, 250, 252, 0.98), rgba(240, 253, 250, 0.85)) !important;
+  border-color: rgba(124, 92, 255, 0.18) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
+}
+
+.light [class*="via-[#0b0f1d]"] h1,
+.light [class*="via-[#0b0f1d]"] h2,
+.light [class*="via-[#0c1020]"] h1,
+.light [class*="via-[#0c1020]"] h2 {
+  color: #0f172a !important;
+}
+
+.light [class*="via-[#0b0f1d]"] p,
+.light [class*="via-[#0c1020]"] p {
+  color: #475569 !important;
+}
+
+/* ---------------------------------------------------------
+   LIGHT MODE HARDCODED DARK BACKGROUND MAPPINGS
+   --------------------------------------------------------- */
+
+.light .bg-\[\#0d1120\] {
+  background-color: #ffffff !important;
+}
+
+.light .bg-\[\#090c17\] {
+  background-color: #ffffff !important;
+}
+
+.light .bg-\[\#080b15\] {
+  background-color: #ffffff !important;
+}
+
+.light .bg-\[\#0b0f1d\] {
+  background-color: #ffffff !important;
+}
+
+.light .bg-\[\#070a14\] {
+  background-color: #ffffff !important;
+}
+
+.light .bg-\[\#0c1020\] {
+  background-color: #f1f5f9 !important;
+}
+
+.light .bg-\[\#060812\] {
+  background-color: #f8fafc !important;
+}
+
+.light .bg-\[\#080b16\] {
+  background-color: #f8fafc !important;
+}
+
+.light .border-slate-600 {
+  border-color: #cbd5e1 !important;
+}
+
+.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+/* =========================================================
+   AGENT CARDS (BugDetails analysis tab)
+   ========================================================= */
+
+.light .agent-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(15, 23, 42, 0.03) !important;
+}
+
+.light .agent-card:hover {
+  background: #f8fafc !important;
+  border-color: rgba(124, 92, 255, 0.22) !important;
+}
+
+/* Text inside agent cards */
+.light .agent-card h4 {
+  color: #0f172a !important;
+}
+
+.light .agent-card p,
+.light .agent-card span {
+  color: #475569;
+}
+
+/* Risk factor / log intelligence sub-boxes inside analysis tab */
+.light .bg-black\/15,
+.light .bg-black\/10 {
+  background-color: #f1f5f9 !important;
+}
+
+.light .border-white\/\[0\.05\] {
+  border-color: #e2e8f0 !important;
+}
+
+.light .border-white\/\[0\.06\] {
+  border-color: #e2e8f0 !important;
+}
+
+/* Risk factor label text */
+.light .agent-card .text-slate-300,
+.light .bg-black\/15 .text-slate-300,
+.light .bg-black\/10 .text-slate-300 {
+  color: #1e293b !important;
+}
+
+/* risk factor detail text (text-slate-600 already covered globally) */
+.light .bg-black\/15 p,
+.light .bg-black\/10 p {
+  color: #475569 !important;
+}
+
+/* Historical duplicate link rows */
+.light a.bg-black\/10 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light a.bg-black\/10:hover {
+  background-color: rgba(124, 92, 255, 0.04) !important;
+  border-color: rgba(124, 92, 255, 0.22) !important;
+}
+
+/* Risk level badge — keep colors readable in light mode */
+.light .bg-red-500\/10 { background-color: #fef2f2 !important; }
+.light .bg-orange-500\/10 { background-color: #fff7ed !important; }
+.light .bg-amber-500\/10 { background-color: #fffbeb !important; }
+.light .bg-cyan-400\/\[0\.06\] { background-color: #ecfeff !important; }
+
+.light .border-red-400\/20 { border-color: #fca5a5 !important; }
+.light .border-orange-400\/20 { border-color: #fdba74 !important; }
+.light .border-amber-400\/20 { border-color: #fcd34d !important; }
+.light .border-cyan-400\/20 { border-color: #67e8f9 !important; }
+.light .border-cyan-400\/10 { border-color: #a5f3fc !important; }
+.light .border-amber-400\/10 { border-color: #fde68a !important; }
+.light .border-violet-400\/10 { border-color: #ddd6fe !important; }
+
+.light .text-orange-300 { color: #ea580c !important; }
+
+/* =========================================================
+   GAUGE CUTOUT & SCORE DISPLAY (Analytics & BugDetails)
+   ========================================================= */
+
+.gauge-center-circle {
+  background-color: #0d1120 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.gauge-score-text {
+  color: #ffffff !important;
+}
+
+.gauge-score-subtext {
+  color: #94a3b8 !important;
+}
+
+.light .gauge-center-circle {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .gauge-score-text {
+  color: #0f172a !important;
+}
+
+.light .gauge-score-subtext {
+  color: #64748b !important;
+}
+
+/* Ensure textarea.input-field in light mode is crisp white with dark readable text */
+.light textarea.input-field {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.light textarea.input-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+.light textarea.input-field:focus {
+  background-color: #ffffff !important;
+  border-color: rgba(124, 92, 255, 0.7) !important;
+}
+
+/* =========================================================
+   BUG PREDICTION PAGE — RISK RESULT CARD PROGRESS TRACK
+   ========================================================= */
+
+.light .bg-slate-700 {
+  background-color: #e2e8f0 !important;
+}
+
+/* =========================================================
+   COGNITIVE TERMINAL — SOFT SLATE / MUTED TINT (NOT PURE WHITE)
+   ========================================================= */
+
+/* Terminal header bar — defined slate titlebar */
+.light .terminal-header-bar {
+  background-color: #cbd5e1 !important;
+  border-bottom: 1px solid #94a3b8 !important;
+}
+
+.light .terminal-header-bar span.font-mono {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* Terminal screen area (middle) — darker cool slate (Slate-200) */
+.light .terminal-screen,
+.light .panel .terminal-screen,
+.light .panel .bg-slate-950,
+.light form.bg-slate-950 {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Terminal input bar — matching slate dock */
+.light .panel form.flex {
+  background-color: #cbd5e1 !important;
+  border-top: 1px solid #94a3b8 !important;
+}
+
+/* Terminal prompt */
+.light .panel form span {
+  color: #0369a1 !important;
+  font-weight: 800 !important;
+}
+
+/* Terminal input text */
+.light .panel form input[type="text"] {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
+}
+
+.light .panel form input[type="text"]::placeholder {
+  color: #475569 !important;
+}
+
+
+/* EXEC button */
+.light .panel form button[type="submit"] {
+  background-color: #7c3aed !important;
+  border-left: 1px solid #6d28d9 !important;
+  color: #ffffff !important;
+}
+
+.light .panel form button[type="submit"]:hover {
+  background-color: #6d28d9 !important;
+}
+
+/* Ensure all terminal logs in screen area are crisp and legible */
+.light .terminal-screen div {
+  color: #0f172a;
+}
+
+.light .terminal-screen .text-slate-200,
+.light .terminal-screen .text-slate-900 {
+  color: #0f172a !important;
+  font-weight: 500 !important;
+}
+
+.light .terminal-screen .text-slate-400,
+.light .terminal-screen .text-slate-600 {
+  color: #334155 !important;
+}
+
+.light .terminal-screen .text-cyan-300,
+.light .terminal-screen .text-cyan-700 {
+  color: #0891b2 !important;
+  font-weight: 700 !important;
+}
+
+.light .terminal-screen .text-emerald-400,
+.light .terminal-screen .text-emerald-700 {
+  color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+.light .terminal-screen .text-amber-300,
+.light .terminal-screen .text-amber-700 {
+  color: #b45309 !important;
+  font-weight: 700 !important;
+}
+
+.light .terminal-screen .text-rose-400,
+.light .terminal-screen .text-rose-700 {
+  color: #dc2626 !important;
+  font-weight: 700 !important;
+}
+
+.light .terminal-screen pre {
+  color: #0891b2 !important;
+  font-weight: 600 !important;
+}
+
+.light .terminal-screen b {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+
+
+/* =========================================================
+   TOGGLE SWITCH BUTTONS (Settings & Preferences)
+   ========================================================= */
+
+.toggle-switch {
+  position: relative;
+  height: 28px;
+  width: 48px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-style: solid;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
+}
+
+.toggle-switch:focus-visible {
+  box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.4);
+}
+
+/* Checked state (ON) — Rich, high-contrast vibrant violet */
+.toggle-switch.is-checked {
+  background-color: #7c3aed !important;
+  border-color: #6d28d9 !important;
+  box-shadow: 0 2px 8px rgba(124, 92, 255, 0.35) !important;
+}
+
+/* Unchecked state (OFF) — Dark Theme */
+.toggle-switch:not(.is-checked) {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Unchecked state (OFF) — Light Theme */
+.light .toggle-switch:not(.is-checked) {
+  background-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Switch Knob — Crisp solid white with drop shadow */
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Knob translation */
+.toggle-switch.is-checked .toggle-knob {
+  transform: translateX(20px);
+}
+
+.toggle-switch:not(.is-checked) .toggle-knob {
+  transform: translateX(0);
+}
+
+/* =========================================================
+   SELECT AND DROPDOWNS IN LIGHT MODE
+   ========================================================= */
+
+.light select.input-field,
+.light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* =========================================================
+   CUSTOM ELEGANT SCROLLBARS
+   ========================================================= */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.light .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.15);
+}
+
+.light .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+/* =========================================================
+   BUGSENSE COPILOT CHAT BUBBLES
+   ========================================================= */
+
+.chat-user-bubble {
+  background-color: #7c3aed !important;
+  background-image: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+  color: #ffffff !important;
+  border-color: #7c3aed !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important;
+}
+
+.chat-user-bubble,
+.chat-user-bubble *,
+.chat-user-bubble p,
+.chat-user-bubble span,
+.chat-user-bubble div {
+  color: #ffffff !important;
+}
+
+.light .chat-assistant-bubble {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light .chat-assistant-bubble,
+.light .chat-assistant-bubble *,
+.light .chat-assistant-bubble p,
+.light .chat-assistant-bubble span {
+  color: #0f172a !important;
+}
+
+.dark .chat-assistant-bubble {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
