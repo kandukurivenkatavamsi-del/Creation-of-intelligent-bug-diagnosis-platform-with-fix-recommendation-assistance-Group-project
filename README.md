@@ -200,6 +200,8 @@ smart-bug-analyzer/
 - **Node.js** 18+ and npm
 - No external database needed — SQLite is a local file created automatically.
 
+> 📖 **All-in-One Setup & Requirements Guide**: See **[INSTALLATION_AND_EXECUTION_GUIDE.md](INSTALLATION_AND_EXECUTION_GUIDE.md)** for a complete, consolidated file containing the full `requirements.txt`, package breakdown, installation commands, and execution instructions.
+
 ## 1. Backend setup
 
 ```bash

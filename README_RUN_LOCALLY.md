@@ -1,12 +1,12 @@
-# How to Run BugSense AI Locally from ZIP
+# How to Run the Intelligent Bug Diagnosis Platform Locally
 
-This project is a full-stack **Intelligent Bug Diagnosis Platform** consisting of:
-- **Backend**: FastAPI + SQLAlchemy (SQLite database) + Multi-Agent AI Engine + RAG Vector Store.
+This project is a full-stack **Intelligent Bug Diagnosis Platform with Fix Recommendation Assistance** consisting of:
+- **Backend**: FastAPI + SQLAlchemy (SQLite database) + Multi-Agent AI Pipeline + RAG Vector Store.
 - **Frontend**: React 18 + Vite + Tailwind CSS.
 
 ---
 
-## 📋 Prerequisites
+## 📋 Prerequisites & System Requirements
 
 Before running, ensure your computer has:
 1. **Python 3.10, 3.11, or 3.12+**: Download from [python.org](https://www.python.org/downloads/)
@@ -15,16 +15,50 @@ Before running, ensure your computer has:
 
 ---
 
+## 📦 Required Python Dependencies (`requirements.txt`)
+
+Below are the exact packages from `backend/requirements.txt`:
+
+```text
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+SQLAlchemy>=2.0.30
+pydantic>=2.7.0
+email-validator>=2.2.0
+pydantic-settings>=2.4.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.9
+bcrypt>=4.0.1
+
+# OCR (screenshot text extraction for attachments)
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# AI multi-agent pipeline (Duplicate Detection Agent's default, offline path)
+numpy>=1.26.0
+scikit-learn>=1.4.0
+
+# PDF report export
+reportlab>=4.2.0
+
+# Testing
+pytest>=8.0.0
+httpx>=0.27.0
+pypdf>=5.0.0
+```
+
+---
+
 ## ⚡ Quick Start (Windows)
 
 ### Option A: 1-Click Launch (Recommended)
-1. Unzip the project folder.
-2. In the project root folder, double-click:
+1. In the project root folder, double-click:
    ```cmd
    start_all.bat
    ```
    *This automatically checks dependencies, creates `backend\venv`, installs required packages if needed, and launches both Backend and Frontend in two separate Command Prompt windows.*
-3. Open your browser and go to: **[http://localhost:5173](http://localhost:5173)**
+2. Open your browser and go to: **[http://localhost:5173](http://localhost:5173)**
 
 ---
 
@@ -41,7 +75,7 @@ If you prefer to run commands manually in Command Prompt (`cmd.exe`):
 
 #### 1. Start the Backend (Terminal 1)
 ```cmd
-cd smart-bug-analyzer\backend
+cd backend
 
 :: Create and activate virtual environment
 python -m venv venv
@@ -50,13 +84,16 @@ call venv\Scripts\activate.bat
 :: Install dependencies (only needed the first time)
 pip install -r requirements.txt
 
+:: (Optional) Seed database with demo bugs
+python seed.py
+
 :: Start FastAPI server
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 #### 2. Start the Frontend (Terminal 2)
 ```cmd
-cd smart-bug-analyzer\frontend
+cd frontend
 
 :: Install node modules (only needed the first time)
 npm install
@@ -79,6 +116,16 @@ npm run dev
 
 ---
 
+## 🐳 Docker Execution
+
+```bash
+docker-compose up --build
+```
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:8000`
+
+---
+
 ## 🌐 URLs & Ports
 
 | Service | URL | Description |
@@ -97,6 +144,9 @@ npm run dev
 - Enter your Name, Email, and Password (at least 8 characters).
 - **First User Rule**: The very first account registered on the database automatically receives the **Admin** role with full access to the Control Center.
 - Subsequent registered users receive the standard **Developer** role.
+- **Seed Demo User**:
+  - Email: `demo@bugadvisor.dev`
+  - Password: `demo1234`
 
 ---
 
@@ -105,4 +155,6 @@ npm run dev
 - **"Cannot connect to backend server"**:
   Make sure the backend terminal window is open and showing `Uvicorn running on http://127.0.0.1:8000`.
 - **Database migrations**:
-  SQLite database schema migrations for new columns (including `users.organization`, `users.status`, `code_diff`, `ai_model`, etc.) run automatically on backend startup. No manual SQL commands required.
+  SQLite database schema migrations run automatically on backend startup. No manual SQL commands required.
+- **`ModuleNotFoundError: No module named 'app'`**:
+  Make sure you run `uvicorn app.main:app` from inside the `backend/` directory, not from the root directory.
